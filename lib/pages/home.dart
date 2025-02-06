@@ -11,116 +11,69 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<Map<String, String>> datas = [];
-  int _currentPageIndex = 0;
+  late String currentLocation;
+  final Map<String, String> locationTypeToString = {
+    "ara": "아라동",
+    "ora": "오라동",
+    "donam": "도남동"
+  };
 
   @override
-    void initState() {
+  void initState() {
+    // TODO: implement initState
     super.initState();
-    _currentPageIndex = 0;
+    currentLocation = "ara";
     datas = [
       {
-        "image" : "assets/images/ara-1.jpg",
-        "title" : "네메시스 축구 275",
-        "location" : "제주 제주시 아라동",
-        "price" : "30000",
-        "likes" : "2"
+        "image": "assets/images/ara-1.jpg",
+        "title": "네메시스 축구 275",
+        "location": "제주 제주시 아라동",
+        "price": "30000",
+        "likes": "2"
       },
       {
-        "image" : "assets/images/ara-2.jpg",
-        "title" : "네메시스 축구 275",
-        "location" : "제주 제주시 아라동",
-        "price" : "30000",
-        "likes" : "2"
+        "image": "assets/images/ara-2.jpg",
+        "title": "네메시스 축구 275",
+        "location": "제주 제주시 아라동",
+        "price": "30000",
+        "likes": "2"
       },
       {
-        "image" : "assets/images/ara-3.jpg",
-        "title" : "네메시스 축구 275",
-        "location" : "제주 제주시 아라동",
-        "price" : "30000",
-        "likes" : "2"
+        "image": "assets/images/ara-3.jpg",
+        "title": "네메시스 축구 275",
+        "location": "제주 제주시 아라동",
+        "price": "30000",
+        "likes": "2"
       },
       {
-        "image" : "assets/images/ara-4.jpg",
-        "title" : "네메시스 축구 275",
-        "location" : "제주 제주시 아라동",
-        "price" : "30000",
-        "likes" : "2"
+        "image": "assets/images/ara-4.jpg",
+        "title": "네메시스 축구 275",
+        "location": "제주 제주시 아라동",
+        "price": "30000",
+        "likes": "2"
       },
       {
-        "image" : "assets/images/ara-5.jpg",
-        "title" : "네메시스 축구 275",
-        "location" : "제주 제주시 아라동",
-        "price" : "30000",
-        "likes" : "2"
+        "image": "assets/images/ara-5.jpg",
+        "title": "네메시스 축구 275",
+        "location": "제주 제주시 아라동",
+        "price": "30000",
+        "likes": "2"
       },
       {
-        "image" : "assets/images/ara-6.jpg",
-        "title" : "네메시스 축구 275",
-        "location" : "제주 제주시 아라동",
-        "price" : "30000",
-        "likes" : "2"
+        "image": "assets/images/ara-6.jpg",
+        "title": "네메시스 축구 275",
+        "location": "제주 제주시 아라동",
+        "price": "30000",
+        "likes": "2"
       }
     ];
   }
 
   final oCcy = new NumberFormat("#,###", "ko_KR");
-  String calcStringToWon(String priceString){
+
+  String calcStringToWon(String priceString) {
     return "${oCcy.format(int.parse(priceString))}원";
   }
-
-  Widget _bodyWidget() {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      itemBuilder: (BuildContext _context, int index) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              datas[index]["image"] != null
-                  ? ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  child: Image.asset(datas[index]["image"]!, width: 100, height: 100,) )
-                  : Container(), // 이미지가 없으면 빈 컨테이너 반환
-                  Expanded(
-                    child: Container(
-                      height: 100,
-                      padding: const EdgeInsets.only(left:20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(datas[index]["title"] ?? "정보 없음", overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 15),),
-                          SizedBox(height: 5),
-                          Text(datas[index]["location"] ?? "정보 없음", style: TextStyle(fontSize : 12, color: Colors.black38),),
-                          SizedBox(height: 5),
-                          Text(calcStringToWon(datas[index]["price"] ?? "정보 없음"), style: TextStyle(fontWeight: FontWeight.w500),),
-                          Expanded(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                SvgPicture.asset("assets/svg/heart_off.svg", width: 13, height: 13,),
-                                SizedBox(width: 5),
-                                Text(datas[index]["likes"] ?? "정보 없음"),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-            ],
-          ),
-        );
-      }, // ← 여기 `,` 추가
-
-      separatorBuilder: (BuildContext _context, int index) {
-        return Container(height: 1, color: Colors.black26);
-      },
-
-      itemCount: datas.length,
-    );
-  }
-
 
   PreferredSizeWidget _appbarWidget() {
     return AppBar(
@@ -128,14 +81,34 @@ class _HomeState extends State<Home> {
         onTap: () {
           print("click");
         },
-        child: Row(
-          children: [
-            Text(
-              "개포동",
-              style: TextStyle(color: Colors.black),
-            ),
-            Icon(Icons.arrow_drop_down),
-          ],
+        child: PopupMenuButton<String>(
+          offset: Offset(-6, 28),
+          shape: ShapeBorder.lerp(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+              1),
+          onSelected: (String where) {
+            print(where);
+            setState(() {
+              currentLocation = where;
+            });
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(value: "ara", child: Text("아라동")),
+              PopupMenuItem(value: "aora", child: Text("오라동")),
+              PopupMenuItem(value: "donam", child: Text("도남동")),
+            ];
+          },
+          child: Row(
+            children: [
+
+              Text(
+                locationTypeToString[currentLocation]!,
+                style: TextStyle(color: Colors.black),),
+              Icon(Icons.arrow_drop_down),
+            ],
+          ),
         ),
       ),
       elevation: 1,
@@ -149,42 +122,84 @@ class _HomeState extends State<Home> {
           icon: Icon(Icons.tune),
         ),
         IconButton(
-          onPressed: () {},
-          icon: SvgPicture.asset("assets/svg/bell.svg", width: 22,)
-        ),
+            onPressed: () {},
+            icon: SvgPicture.asset(
+              "assets/svg/bell.svg",
+              width: 22,
+            )),
       ],
     );
   }
 
-  BottomNavigationBarItem _bottomNavigationBarItem(String iconName, String label){
-    return BottomNavigationBarItem(
-        icon: Padding(
-          padding: const EdgeInsets.only(bottom: 5),
-          child: SvgPicture.asset("assets/svg/${iconName}_off.svg", width: 22),
-        ),
-      label: label
-    );
-  }
+  Widget _bodyWidget() {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      itemBuilder: (BuildContext _context, int index) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              datas[index]["image"] != null
+                  ? ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  child: Image.asset(
+                    datas[index]["image"]!,
+                    width: 100,
+                    height: 100,
+                  ))
+                  : Container(), // 이미지가 없으면 빈 컨테이너 반환
+              Expanded(
+                child: Container(
+                  height: 100,
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        datas[index]["title"] ?? "정보 없음",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        datas[index]["location"] ?? "정보 없음",
+                        style: TextStyle(fontSize: 12, color: Colors.black38),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        calcStringToWon(datas[index]["price"] ?? "정보 없음"),
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SvgPicture.asset(
+                              "assets/svg/heart_off.svg",
+                              width: 13,
+                              height: 13,
+                            ),
+                            SizedBox(width: 5),
+                            Text(datas[index]["likes"] ?? "정보 없음"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      }, // ← 여기 `,` 추가
 
-  Widget _bottomNavigationBarWidget() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-        onTap: (int index) {
-          print(index);
-          setState(() {
-            _currentPageIndex = index;
-          });
-        },
-        currentIndex: _currentPageIndex,
-        selectedItemColor: Colors.black,
-        selectedFontSize: 12,
-        items: [
-        _bottomNavigationBarItem("home", "홈"),
-        _bottomNavigationBarItem("notes", "동네생활"),
-        _bottomNavigationBarItem("location", "내 근처"),
-        _bottomNavigationBarItem("chat", "채팅"),
-        _bottomNavigationBarItem("user", "나의 당근"),
-    ]);
+      separatorBuilder: (BuildContext _context, int index) {
+        return Container(height: 1, color: Colors.black26);
+      },
+
+      itemCount: datas.length,
+    );
   }
 
   @override
@@ -192,7 +207,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: _appbarWidget(),
       body: _bodyWidget(),
-      bottomNavigationBar: _bottomNavigationBarWidget(),
     );
   }
 }
+
